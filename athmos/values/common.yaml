@@ -1,0 +1,6 @@
+host: athmos-cloud.com
+issuer:
+  email: "athmos-cloud@gmail.com"
+  apiToken:
+    secretName: cloudflare-secret
+    secretKey: cloudflare-api-token

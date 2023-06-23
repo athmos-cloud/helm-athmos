@@ -1,0 +1,8 @@
+#https://artifacthub.io/packages/helm/bitnami/mongodb?modal=values
+auth:
+  username: infra-athmos
+  database: infrastructure
+  existingSecret: mongodb-auth
+
+service:
+  nameOverride: mongodb

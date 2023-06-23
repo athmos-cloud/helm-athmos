@@ -1,0 +1,6 @@
+- mongo X
+- rabbitmq
+- app (expose)
+- api
+- worker
+- watcher

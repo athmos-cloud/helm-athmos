@@ -1,0 +1,23 @@
+repositories:
+  - name: crossplane-stable
+    url: https://charts.crossplane.io/stable
+    
+
+releases:
+  - chart: crossplane-stable/crossplane
+    cleanupOnFail: true
+    devel: false
+    name: crossplane
+    namespace: crossplane-system
+    skipDeps: false
+    version: 1.12.2
+  
+  - chart: ./providers
+    cleanupOnFail: true
+    devel: false
+    name: providers
+    namespace: providers
+    skipDeps: false
+    version: 0.1.0
+    values:
+      - ./values/providers.yaml

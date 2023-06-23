@@ -1,0 +1,31 @@
+# Possible actions for https redirection
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: harbor-route
+  namespace: {{ .Values.registry.namespace }}
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+  - match: {{ printf "Host(`%s`)" .Values.host }}
+    kind: Rule
+    services:
+    {{- with .Values.registry.services.portal }}
+    - name: {{ .name }}
+      namespace: {{ $.Values.registry.namespace }}
+      port: {{ .port }}
+    {{- end }}
+  - match: {{ printf "Host(`%s`) && PathPrefix(`/api/`, `/service/`, `/v2/`, `/chartrepo/`, `/c/`)" .Values.host }}
+    kind: Rule
+    services:
+    {{- with .Values.registry.services.core }}
+    - name: {{ .name }}
+      namespace: {{ $.Values.registry.namespace }}
+      port: {{ .port }}
+    {{- end }}
+  tls:
+    secretName: {{ .Values.registry.certSecretName }}
+    domains:
+    - main: {{ .Values.host }}

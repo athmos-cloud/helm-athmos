@@ -1,0 +1,16 @@
+# https://artifacthub.io/packages/helm/neo4j-helm-charts/neo4j-standalone?modal=values
+neo4j:
+  name: "neo4j-gateway"
+  # passwordFromSecret: neo4j-secrets
+  edition: "community"
+acceptLicenseAgreement: "yes"
+services:
+  neo4j:
+    enabled: true
+    spec:
+      type: ClusterIP
+volumes:
+  data:
+    mode: defaultStorageClass
+    requests:
+      storage: 1Gi

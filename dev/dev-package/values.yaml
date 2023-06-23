@@ -1,0 +1,12 @@
+host: "registry.dev.athmos-cloud.com"
+resolverName: "main-resolver"
+registry:
+  certSecretName: registry-cert-secret
+  namespace: registry
+  services:
+    portal:
+      name: harbor-portal
+      port: 80
+    core:
+      name: harbor-core
+      port: 80
