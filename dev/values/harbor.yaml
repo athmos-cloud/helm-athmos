@@ -1,6 +1,6 @@
 # https://artifacthub.io/packages/helm/harbor/harbor
 enabled: true
-externalURL: https://registry.dev.athmos-cloud.com
+externalURL: https://registry.athmos-cloud.com
 notary:
   enabled: true
 expose:
@@ -8,7 +8,7 @@ expose:
   tls:
     enabled: false
     auto:
-      commonName: "registry.dev.athmos-cloud.com"
+      commonName: "registry.athmos-cloud.com"
   ingress:
     hosts:
       core: registry.dev.athmos-cloud.com

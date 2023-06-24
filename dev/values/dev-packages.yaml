@@ -1,8 +1,8 @@
-host: "registry.dev.athmos-cloud.com"
+host: "registry.athmos-cloud.com"
 resolverName: "main-resolver"
 registry:
   certSecretName: registry-cert-secret
-  namespace: registry
+  namespace: dev
   services:
     portal:
       name: harbor-portal

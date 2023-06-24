@@ -24,7 +24,8 @@ releases:
     cleanupOnFail: true
     devel: false
     name: cert-manager
-    namespace: kube-system
+    namespace: cert-manager
+    createNamespace: true
     skipDeps: false
     version: 1.12.0
     values:

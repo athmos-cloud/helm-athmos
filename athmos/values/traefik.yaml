@@ -1,6 +1,6 @@
 additionalArguments:
-  - --accesslog: true
-  - --providers.kubernetescrd.allowCrossNamespace: true
+  - --accesslog=true
+  - --providers.kubernetescrd.allowCrossNamespace=true
 logs:
   general:
     level: DEBUG

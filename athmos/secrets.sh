@@ -3,14 +3,17 @@
 COMMON_NAMESPACE=common
 INFRA_NAMESPACE=infra
 GATEWAY_NAMESPACE=gateway
+CERT_MANAGER_NAMESPACE=cert-manager
 
 kubectl create namespace "$COMMON_NAMESPACE"  > /dev/null 2>&1
 kubectl create namespace "$INFRA_NAMESPACE" > /dev/null 2>&1
 kubectl create namespace "$GATEWAY_NAMESPACE" > /dev/null 2>&1
+kubectL create namespace "$CERT_MANAGER_NAMESPACE" > /dev/null 2>&1
 
 CLOUDFLARE_SECRET_NAME=cloudflare-secret
 CLOUDFLARE_SECRET_KEY=cloudflare-api-token
-kubectl -n $COMMON_NAMESPACE create secret generic $CLOUDFLARE_SECRET_NAME --from-file=$CLOUDFLARE_SECRET_KEY=$HOME/.athmos/cloudflare > /dev/null 2>&1
+kubectl -n $COMMON_NAMESPACE create secret generic $CLOUDFLARE_SECRET_NAME --from-literal=$CLOUDFLARE_SECRET_KEY=$(cat "$HOME/.athmos/cloudflare") > /dev/null 2>&1
+kubectl -n $CERT_MANAGER_NAMESPACE create secret generic $CLOUDFLARE_SECRET_NAME --from-literal=$CLOUDFLARE_SECRET_KEY=$(cat "$HOME/.athmos/cloudflare") > /dev/null 2>&1
 
 # NEO4J_NAMESPACE=gateway
 # NEO4J_SECRET_NAME=neo4j-secrets
