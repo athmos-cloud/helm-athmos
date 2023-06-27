@@ -17,7 +17,7 @@ persistence:
   resourcePolicy: ""
   persistentVolumeClaim:
     registry:
-      size: 500Mi
+      size: 4Gi
     jobservice:
       size: 100Mi
     database:

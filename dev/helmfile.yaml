@@ -13,6 +13,7 @@ releases:
     version: 1.12.1
     values:
       - ./values/harbor.yaml
+      
   - chart: ./dev-package
     name: dev-packages
     cleanupOnFail: true

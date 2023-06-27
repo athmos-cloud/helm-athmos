@@ -75,3 +75,10 @@ releases:
     cleanupOnFail: true
     values:
       - ./values/rabbitmq.yaml
+  
+  - chart: ./infra-worker
+    name: infra-worker
+    namespace: infra
+    createNamespace: true
+    version: 0.1.0
+    cleanupOnFail: true

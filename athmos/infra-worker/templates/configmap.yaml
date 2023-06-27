@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.config.name }}
+data:
+  {{ .Values.config.filename}}: |
+    staticFilesDir: "/etc/athmos/static"
+    http:
+      port: {{ .Values.service.port }}
+    kubernetes:
+      configPath: "/root/.kube/config"
+    {{- with .Values.rabbitmq }}
+    rabbitmq:
+      address: {{ .address }}
+      port: {{ .port }}
+      username: {{ .username }}
+      outcoming: {{ .outcoming }}
+      incoming: {{ .incoming }}
+    {{- end }}
+    {{- with .Values.mongo }}
+    mongo:
+      address: {{ .address }}
+      port: {{ .port }}
+      username: {{ .username }}
+      database: {{ .database }}
+      projectCollection: {{ .projectCollection }}
+    {{- end }}
+

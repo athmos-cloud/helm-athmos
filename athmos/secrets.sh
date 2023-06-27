@@ -33,10 +33,22 @@ RABBITMQ_SECRET_NAME=rabbitmq-auth
 RABBITMQ_PASSWORD=$(openssl rand -base64 15)
 
 kubectl -n $COMMON_NAMESPACE create secret generic $RABBITMQ_SECRET_NAME \
-            --from-literal=rabbitmq-password=$RABBITMQ_SECRET_NAME > /dev/null 2>&1
+            --from-literal=rabbitmq-password=$RABBITMQ_PASSWORD > /dev/null 2>&1
 
 kubectl -n $INFRA_NAMESPACE create secret generic $RABBITMQ_SECRET_NAME \
-            --from-literal=rabbitmq-password=$RABBITMQ_SECRET_NAME > /dev/null 2>&1
+            --from-literal=rabbitmq-password=$RABBITMQ_PASSWORD > /dev/null 2>&1
 
 kubectl -n $GATEWAY_NAMESPACE create secret generic $RABBITMQ_SECRET_NAME \
-            --from-literal=rabbitmq-password=$RABBITMQ_SECRET_NAME > /dev/null 2>&1
+            --from-literal=rabbitmq-password=$RABBITMQ_PASSWORD > /dev/null 2>&1
+
+REGISTRY_CREDENTIALS_SECRET_NAME=regcred
+REGISTRY_SERVER=https://registry.athmos-cloud.com/athmos/
+DOCKER_USERNAME="robot\$kubernetes-puller"
+kubectl -n $INFRA_NAMESPACE create secret docker-registry $REGISTRY_CREDENTIALS_SECRET_NAME \
+    --docker-server=$REGISTRY_SERVER --docker-username=$DOCKER_USERNAME --docker-password="$(cat "$HOME/.athmos/registry-pwd")" > /dev/null 2>&1
+
+
+OPERATIONS_KUBECONFIG_SECRET_NAME=operations-kubeconfig
+kubectl -n $INFRA_NAMESPACE create secret generic $OPERATIONS_KUBECONFIG_SECRET_NAME \
+    --from-file=config="$HOME/.athmos/operation-kubeconfig" > /dev/null 2>&1
+5qmbsGW8DubIxOog8zKq
