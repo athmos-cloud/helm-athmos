@@ -1,22 +1,45 @@
-# Default values for infra-watcher.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
 replicaCount: 1
 
 image:
-  repository: nginx
-  pullPolicy: IfNotPresent
+  repository: registry.athmos-cloud.com/athmos/infra-watcher-athmos
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "latest"
 
-imagePullSecrets: []
+imagePullSecrets:
+- name: regcred
 nameOverride: ""
 fullnameOverride: ""
 
+command: ["/app"]
+config:
+  name: "infra-watcher-config"
+  envVariableName: "CONFIG_FILE_LOCATION"
+  folder: "/etc/athmos"
+  filename: "config.yaml"
+
+kubeConfig:
+  name: "operations-kubeconfig"
+  envVariableName: "KUBECONFIG_PATH"
+  folder: "/root/.kube"
+  filename: "config"
+
+env:
+  secrets:
+  - name: "RABBITMQ_PASSWORD"
+    secretName: "rabbitmq-auth"
+    secretKey: "rabbitmq-password"
+
+rabbitmq:
+  address: "rabbitmq.common.svc.cluster.local"
+  port: 5672
+  username: "athmos"
+  outcoming: "to-gateway-api"
+  incoming: "to-infra-worker"
+
 serviceAccount:
   # Specifies whether a service account should be created
-  create: true
+  create: false
   # Annotations to add to the service account
   annotations: {}
   # The name of the service account to use.
@@ -38,7 +61,7 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 80
+  port: 3000
 
 ingress:
   enabled: false
@@ -56,22 +79,18 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+resources:
+  limits:
+    cpu: 60m
+    memory: 100Mi
+  requests:
+    cpu: 60m
+    memory: 100Mi
 
 autoscaling:
-  enabled: false
+  enabled: true
   minReplicas: 1
-  maxReplicas: 100
+  maxReplicas: 30
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 

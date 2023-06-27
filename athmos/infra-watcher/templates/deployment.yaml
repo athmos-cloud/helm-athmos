@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "infra-watcher.fullname" . }}
+  name: {{ include "infra-worker.fullname" . }}
   labels:
-    {{- include "infra-watcher.labels" . | nindent 4 }}
+    {{- include "infra-worker.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "infra-watcher.selectorLabels" . | nindent 6 }}
+      {{- include "infra-worker.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "infra-watcher.selectorLabels" . | nindent 8 }}
+        {{- include "infra-worker.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "infra-watcher.serviceAccountName" . }}
+      serviceAccountName: {{ include "infra-worker.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -33,20 +33,53 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: {{ toYaml .Values.command | nindent 12 }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: /ready
               port: http
           readinessProbe:
             httpGet:
-              path: /
+              path: /ready
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          env:
+          {{- range .Values.env.secrets }}
+            - name: {{ .name }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .secretName }}
+                  key: {{ .secretKey }}
+          {{- end }}
+          {{- with .Values.config }}
+            - name: {{ .envVariableName }}
+              value: {{ printf "%s/%s" .folder .filename | quote }}
+          {{- end }}
+          {{- with .Values.kubeConfig }}
+            - name: {{ .envVariableName }}
+              value: {{ printf "%s/%s"  .folder .filename | quote }}
+          {{- end }}
+            - name: PORT
+              value: "{{ .Values.service.port }}"
+          volumeMounts:
+            - name: config-volume
+              mountPath: {{ .Values.config.folder }}
+              readOnly: true
+            - name: kubeconfig-volume
+              mountPath: {{ .Values.kubeConfig.folder }}
+              readOnly: true
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ .Values.config.name }}
+        - name: kubeconfig-volume
+          secret:
+            secretName: {{ .Values.kubeConfig.name }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

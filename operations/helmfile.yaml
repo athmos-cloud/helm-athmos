@@ -11,6 +11,8 @@ releases:
     namespace: crossplane-system
     skipDeps: false
     version: 1.12.2
+    values:
+      - ./values/crossplane.yaml
   
   - chart: ./providers
     cleanupOnFail: true

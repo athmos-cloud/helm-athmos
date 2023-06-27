@@ -1,0 +1,92 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: debug
+  namespace: infra
+spec:
+  containers:
+  - command:
+    - "sleep"
+    - "60000"
+    env:
+    - name: RABBITMQ_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          key: rabbitmq-password
+          name: rabbitmq-auth
+    - name: CONFIG_FILE_LOCATION
+      value: /etc/athmos/config.yaml
+    - name: KUBECONFIG_PATH
+      value: /root/.kube/config
+    image: alpine
+    imagePullPolicy: Always
+    name: infra-watcher
+    resources:
+      limits:
+        cpu: 60m
+        memory: 100Mi
+      requests:
+        cpu: 60m
+        memory: 100Mi
+    securityContext: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /etc/athmos
+      name: config-volume
+      readOnly: true
+    - mountPath: /root/.kube
+      name: kubeconfig-volume
+      readOnly: true
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-chzjz
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  imagePullSecrets:
+  - name: regcred
+  nodeName: k3s-athmos-cluster-b05f-2d7b6c-node-pool-bbe7-8i9w4
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - configMap:
+      defaultMode: 420
+      name: infra-watcher-config
+    name: config-volume
+  - name: kubeconfig-volume
+    secret:
+      defaultMode: 420
+      secretName: operations-kubeconfig
+  - name: kube-api-access-chzjz
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace

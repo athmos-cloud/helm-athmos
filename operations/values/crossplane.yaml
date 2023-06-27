@@ -1,0 +1,8 @@
+replicas: 2
+resourcesCrossplane:
+  limits:
+    cpu: 500m
+    memory: 1Gi
+  requests:
+    cpu: 500m
+    memory: 1Gi

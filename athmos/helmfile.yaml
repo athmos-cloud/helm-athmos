@@ -82,3 +82,10 @@ releases:
     createNamespace: true
     version: 0.1.0
     cleanupOnFail: true
+
+  - chart: ./infra-watcher
+    name: infra-watcher
+    namespace: infra
+    createNamespace: true
+    version: 0.1.0
+    cleanupOnFail: true

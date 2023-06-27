@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "infra-watcher.name" -}}
+{{- define "infra-worker.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "infra-watcher.fullname" -}}
+{{- define "infra-worker.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "infra-watcher.chart" -}}
+{{- define "infra-worker.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "infra-watcher.labels" -}}
-helm.sh/chart: {{ include "infra-watcher.chart" . }}
-{{ include "infra-watcher.selectorLabels" . }}
+{{- define "infra-worker.labels" -}}
+helm.sh/chart: {{ include "infra-worker.chart" . }}
+{{ include "infra-worker.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "infra-watcher.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "infra-watcher.name" . }}
+{{- define "infra-worker.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "infra-worker.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "infra-watcher.serviceAccountName" -}}
+{{- define "infra-worker.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "infra-watcher.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "infra-worker.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

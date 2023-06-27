@@ -51,4 +51,3 @@ kubectl -n $INFRA_NAMESPACE create secret docker-registry $REGISTRY_CREDENTIALS_
 OPERATIONS_KUBECONFIG_SECRET_NAME=operations-kubeconfig
 kubectl -n $INFRA_NAMESPACE create secret generic $OPERATIONS_KUBECONFIG_SECRET_NAME \
     --from-file=config="$HOME/.athmos/operation-kubeconfig" > /dev/null 2>&1
-5qmbsGW8DubIxOog8zKq
