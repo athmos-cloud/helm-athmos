@@ -35,7 +35,7 @@ rabbitmq:
   port: 5672
   username: "athmos"
   outcoming: "to-gateway-api"
-  incoming: "to-infra-worker"
+  incoming: "to-infra-watcher"
 
 serviceAccount:
   # Specifies whether a service account should be created

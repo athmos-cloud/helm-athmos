@@ -1,7 +1,7 @@
 # https://artifacthub.io/packages/helm/neo4j-helm-charts/neo4j-standalone?modal=values
 neo4j:
   name: "neo4j-gateway"
-  # passwordFromSecret: neo4j-secrets
+  passwordFromSecret: "neo4jsecret"
   edition: "community"
 acceptLicenseAgreement: "yes"
 services:
