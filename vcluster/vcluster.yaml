@@ -1,0 +1,28 @@
+syncer:
+  extraArgs:
+  - --tls-san=74.220.31.55
+# Enable HA mode
+enableHA: true
+
+# Scale up k3s replicas
+replicas: 2
+
+# Set external datastore endpoint
+vcluster:
+  env:
+    - name: K3S_DATASTORE_ENDPOINT
+      value: mysql://root:74uYdMfgT8@tcp(mysql:3306)/etcd
+  resources:
+    limits:
+      cpu: 3000m
+      memory: 6000Mi
+    requests:
+      cpu: 20m
+      memory: 64Mi
+
+storage:
+  persistence: false
+
+# Scale up CoreDNS replicas
+coredns:
+  replicas: 2

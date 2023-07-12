@@ -1,0 +1,39 @@
+repositories:
+  - name: bitnami
+    url: https://charts.bitnami.com/bitnami
+  - name: loft
+    url: https://charts.loft.sh
+    
+releases:
+  - chart: bitnami/mysql
+    cleanupOnFail: true
+    devel: false
+    name: mysql
+    namespace: operations
+    createNamespace: true
+    skipDeps: false
+    version: 9.10.2
+    values:
+      - ./values/mysql.yaml
+  # - chart: bitnami/etcd
+  #   cleanupOnFail: true
+  #   devel: false
+  #   name: etcd
+  #   namespace: operations
+  #   createNamespace: true
+  #   skipDeps: false
+  #   version: 9.0.4
+  #   values:
+  #     - ./values/etcd.yaml
+  #https://artifacthub.io/packages/helm/loft/vcluster
+  - chart: loft/vcluster
+    cleanupOnFail: true
+    devel: false
+    name: vcluster
+    namespace: operations
+    createNamespace: true
+    skipDeps: false
+    version: 0.15.3-beta.0
+    values:
+      - ./values/vcluster.yaml
+  

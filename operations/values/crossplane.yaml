@@ -1,8 +1,12 @@
-replicas: 2
+replicas: 1
 resourcesCrossplane:
   limits:
-    cpu: 500m
-    memory: 1Gi
+    cpu: 2000m
+    memory: 6000Mi
   requests:
-    cpu: 500m
-    memory: 1Gi
+    cpu: 1200m
+    memory: 700Mi
+provider:
+  packages:
+    - xpkg.upbound.io/upbound/provider-gcp:v0.31.0
+    # - xpkg.upbound.io/upbound/provider-aws:v0.37.0

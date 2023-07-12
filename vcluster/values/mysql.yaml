@@ -1,0 +1,4 @@
+auth:
+  password: cluster!op173
+  user: operations
+  database: etcd

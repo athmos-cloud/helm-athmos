@@ -1,0 +1,10 @@
+replicaCount: 3
+auth:
+  client:
+    useAutoTLS: true
+    secureTransport: true
+    enableAuthentication: true
+    existingSecret: "etcd-certs"
+    certFileName: "cert.pem"
+    certKeyFileName: "key.pem"
+    caFilename: "ca.pem"

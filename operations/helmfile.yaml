@@ -14,12 +14,3 @@ releases:
     values:
       - ./values/crossplane.yaml
   
-  - chart: ./providers
-    cleanupOnFail: true
-    devel: false
-    name: providers
-    namespace: providers
-    skipDeps: false
-    version: 0.1.0
-    values:
-      - ./values/providers.yaml

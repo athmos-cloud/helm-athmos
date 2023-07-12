@@ -45,11 +45,11 @@ env:
   - name: "RMQ_USER"
     value: "athmos"
   - name: "RMQ_WRITE_QUEUE"
-    value: "to-gateway-api"
+    value: "to-infra-worker"
   - name: "RMQ_READ_QUEUE"
     value: "to-gateway-api"
   - name: "RESSOURCES_MANAGER_URL"
-    value: "http://apigateway.infra.svc.cluster.local"
+    value: "http://infra-worker.infra.svc.cluster.local:3000"
   
 
 

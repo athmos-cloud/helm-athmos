@@ -31,11 +31,12 @@ env:
     secretKey: "rabbitmq-password"
   - name: "MONGO_PASSWORD"
     secretName: "mongodb-auth"
-    secretKey: "mongodb-passwords"
+    secretKey: "mongodb-root-password"
   raw:
   - name: "REDIRECTION_URL"
     value: "https://api.athmos-cloud.com"
-
+  - name: "MONGO_PASSWORD"
+    value: "KQWGaixIkPT0vixf7rTk"
 rabbitmq:
   address: "rabbitmq.common.svc.cluster.local"
   port: 5672
@@ -46,7 +47,7 @@ rabbitmq:
 mongo:
   address: "mongodb"
   port: 27017
-  username: "infra-athmos"
+  username: "root"
   database: "infrastructure"
   projectCollection: "projects"
 

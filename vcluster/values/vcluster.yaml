@@ -1,0 +1,105 @@
+syncer:
+  extraArgs:
+  - --tls-san=34.163.163.69
+# Enable HA mode
+enableHA: true
+
+replicas: 2
+
+vcluster:
+  env:
+    - name: K3S_DATASTORE_ENDPOINT
+      value: mysql://root:NAIjbDnhwf@tcp(mysql:3306)/etcd
+  resources:
+    limits:
+      cpu: 3000m
+      memory: 20000Mi
+    requests:
+      cpu: 20m
+      memory: 64Mi
+
+storage:
+  persistence: false
+coredns:
+  replicas: 2
+
+  
+
+
+
+
+
+# replicas: 2
+# enableHA: true
+# storage:
+#   persistence: false
+# coredns:
+#   replicas: 2
+
+# syncer:
+#   extraArgs:
+#   - --tls-san=74.220.31.55
+#   env: []
+#   livenessProbe:
+#     enabled: true
+#   readinessProbe:
+#     enabled: true
+#   # volumeMounts:
+#   #   - mountPath: /data
+#   #     name: data
+#   #     readOnly: true
+#   extraVolumeMounts: []
+#   resources:
+#     limits:
+#       cpu: 2000m
+#       memory: 1200Mi
+#     requests:
+#       cpu: 20m
+#       memory: 64Mi
+#   # kubeConfigContextName: "operations-vcluster"
+#   serviceAnnotations: {}
+
+# vcluster:
+#   image: rancher/k3s:v1.26.0-k3s1
+#   command:
+#     - /bin/k3s
+#   baseArgs:
+#     - server
+#     - --write-kubeconfig=/data/k3s-config/kube-config.yaml
+#     - --data-dir=/data
+#     - --disable=traefik,servicelb,metrics-server,local-storage,coredns
+#     - --disable-network-policy
+#     - --disable-agent
+#     - --disable-cloud-controller
+#     - --flannel-backend=none
+#   extraArgs: []
+#   volumeMounts:
+#   - mountPath: /etc/certs
+#     name: datastore-tls
+  
+
+#   env:
+#     - name: K3S_DATASTORE_ENDPOINT
+#       value: 'https://etcd-1:2379,https://etcd-2:2379,https://etcd-3:2379'
+#     - name: K3S_DATASTORE_CERTFILE
+#       value: '/etc/certs/cert.pem' 
+#     - name: K3S_DATASTORE_KEYFILE
+#       value: '/etc/certs/key.pem'
+#   resources:
+#     limits:
+#       memory: 7Gi
+#       cpu: 3000m
+#     requests:
+#       cpu: 200m
+#       memory: 256Mi
+
+# volumes:
+# - name: datastore-tls
+#   secret:
+#     secretName: etcd-certs
+#     items:
+#     - key: cert.pem
+#       path: cert.pem
+#     - key: key.pem
+#       path:  key.pem
+

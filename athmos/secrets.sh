@@ -21,7 +21,7 @@ kubectl -n $CERT_MANAGER_NAMESPACE create secret generic $CLOUDFLARE_SECRET_NAME
 NEO4J_NAMESPACE=gateway
 NEO4J_SECRET_NAME=neo4jsecret
 NEO4J_API_SECRET_NAME=neo4j-gateway-auth
-NEO4J_PASSWORD="$(openssl rand -base64 15)!"
+NEO4J_PASSWORD="$(openssl rand -base64 15 | tr -d "=+/" | cut -c1-15)!"
 
 kubectl create namespace "$NEO4J_NAMESPACE" > /dev/null 2>&1
 kubectl -n $NEO4J_NAMESPACE create secret generic $NEO4J_SECRET_NAME --from-literal=NEO4J_AUTH="neo4j/$NEO4J_PASSWORD" > /dev/null 2>&1
@@ -36,7 +36,7 @@ kubectl -n $INFRA_NAMESPACE create secret generic  $MONGODB_SECRET_NAME \
 
 COMMON_NAMESPACE=common
 RABBITMQ_SECRET_NAME=rabbitmq-auth
-RABBITMQ_PASSWORD=$(openssl rand -base64 15)
+RABBITMQ_PASSWORD=$(openssl rand -base64 15 | tr -d "=+/" | cut -c1-15)
 
 kubectl -n $COMMON_NAMESPACE create secret generic $RABBITMQ_SECRET_NAME \
             --from-literal=rabbitmq-password=$RABBITMQ_PASSWORD > /dev/null 2>&1
